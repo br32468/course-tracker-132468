@@ -1,121 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useRef, useCallback } from 'react';
+import StudentCard from './components/StudentCard';
+import RegisterCourse from './components/RegisterCourse';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [courses, setCourses] = useState([
+    {
+      id: 1,
+      name: "Introduction to Cs", 
+      credits: 6,
+      grade: 92,
+      attending: true,
+      difficulty: "Easy"
+    },
+    {
+      id: 2,
+      name: "Calculus ",
+      credits: 6,
+      grade: 45,
+      attending: false,
+      difficulty: "Hard"
+    },
+    {
+      id: 3,
+      name: "Data Structures",
+      credits: 6,
+      grade: 78,
+      attending: true,
+      difficulty: "Moderate"
+    }
+  ]);
+
+  const fullName = "Besir Rexhepi";     
+  const studentId = "132468";       
+NT_
+  
+  const addCourse = useCallback((newCourse) => {
+    setCourses(prev => [...prev, { ...newCourse, id: Date.now() }]);
+  }, []);
+
+  const nameInputRef = useRef(null);   
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div style={{ padding: '20px', fontFamily: 'sans-serif', maxWidth: '800px', margin: '0 auto' }}>
+      <h1>Semester Course Tracker</h1>
+      <p><strong>{fullName}</strong> (ID: {studentId})</p>
+      <p>The courses below are my enrolled courses for this semester.</p>
 
-      <div className="ticks"></div>
+      <h2>My Courses</h2>
+      <div>
+        {courses.map(course => (
+          <StudentCard key={course.id} course={course} />
+        ))}
+      </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <RegisterCourse 
+        onRegister={addCourse} 
+        nameInputRef={nameInputRef} 
+      />
+    </div>
+  );
 }
 
-export default App
+export default App;
